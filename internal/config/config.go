@@ -4,18 +4,18 @@ import (
 	"flag"
 	"log"
 	"os"
+
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type HTTPConfig struct {
-	address string
+	Address string `yaml:"address" env-required:"true"`
 }
 
 type Config struct {
-	Env string `yaml:"env" env:"ENV" env-required:"true" envDefault:"development"`
+	Env         string `yaml:"env" env:"ENV" env-required:"true" envDefault:"development"`
 	StoragePath string `yaml:"storage_path" env:"STORAGE_PATH" env-required:"true" envDefault:"./storage"`
-	HTTP HTTPConfig `yaml:"http_server"`
-
+	HTTPConfig  `yaml:"http_server"`
 }
 
 func MustLoadConfig() *Config {
@@ -23,7 +23,7 @@ func MustLoadConfig() *Config {
 
 	configPath = os.Getenv("CONFIG_PATH")
 
-	if(configPath == "") {
+	if configPath == "" {
 		flags := flag.String("config", "", "path to the configuration file")
 		flag.Parse()
 		configPath = *flags
@@ -38,11 +38,11 @@ func MustLoadConfig() *Config {
 	}
 
 	var cfg Config
-	
+
 	err := cleanenv.ReadConfig(configPath, &cfg)
 	if err != nil {
 		log.Fatalf("Error reading configuration file: %v", err)
 	}
 
 	return &cfg
-}	
+}

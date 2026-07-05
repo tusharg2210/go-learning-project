@@ -1,4 +1,4 @@
-module github.com/tusharg2210/go-learing-project
+module github.com/tusharg2210/go-learning-project
 
 go 1.25.3
 
